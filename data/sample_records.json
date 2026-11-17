@@ -1,0 +1,93 @@
+
+[
+  {
+    "id": "001",
+    "year": 2023,
+    "paper": "General Studies Paper I - Set A",
+    "q_no": 1,
+    "question": "Consider the following statements: (1) Jhelum River passes through Wular Lake. (2) Krishna River directly feeds Kolleru Lake. (3) Meandering of Gandak River formed Kanwar Lake. How many statements are correct?",
+    "options": [
+      "Only one",
+      "Only two",
+      "All three",
+      "None"
+    ],
+    "subject": "Geography",
+    "syllabus_topic": "Indian rivers and lakes",
+    "answer": "Only one statement is correct. Option A.",
+    "ncert_book": "Class 9 Contemporary India-I, Chapter 3 - Drainage",
+    "page": 27
+  },
+  {
+    "id": "002",
+    "year": 2023,
+    "paper": "General Studies Paper I - Set A",
+    "q_no": 3,
+    "question": "Consider the following trees: (1) Jackfruit (2) Mahua (3) Teak. How many of the above are deciduous trees?",
+    "options": [
+      "Only one",
+      "Only two",
+      "All three",
+      "None"
+    ],
+    "subject": "Environment",
+    "syllabus_topic": "Natural vegetation and deciduous forests",
+    "answer": "Only two. Mahua and Teak are deciduous trees. Option B.",
+    "ncert_book": "Class 9 Contemporary India-I, Chapter 5 - Natural Vegetation and Wildlife",
+    "page": 40
+  },
+  {
+    "id": "003",
+    "year": 2023,
+    "paper": "General Studies Paper I - Set A",
+    "q_no": 15,
+    "question": "Which organisms perform waggle dance to indicate the direction and distance of a food source?",
+    "options": [
+      "Butterflies",
+      "Dragonflies",
+      "Honeybees",
+      "Wasps"
+    ],
+    "subject": "Science",
+    "syllabus_topic": "Animal behaviour and communication",
+    "answer": "Honeybees. Option C.",
+    "ncert_book": null,
+    "page": null
+  },
+  {
+    "id": "004",
+    "year": 2023,
+    "paper": "General Studies Paper I - Set A",
+    "q_no": 31,
+    "question": "In essence, what does Due Process of Law mean?",
+    "options": [
+      "The principle of natural justice",
+      "The procedure established by law",
+      "Fair application of law",
+      "Equality before law"
+    ],
+    "subject": "Polity",
+    "syllabus_topic": "Judiciary and constitutional principles",
+    "answer": "The principle of natural justice. Option A.",
+    "ncert_book": "Class 11 Indian Constitution at Work, Chapter 6 - Judiciary",
+    "page": null
+  },
+  {
+    "id": "005",
+    "year": 2023,
+    "paper": "General Studies Paper I - Set A",
+    "q_no": 32,
+    "question": "Statement I: Prisons are managed by State Governments with their own rules for day-to-day administration. Statement II: The Prisons Act, 1894 kept prisons under the control of Provincial Governments. Which option is correct?",
+    "options": [
+      "Both statements are correct and Statement II explains Statement I",
+      "Both statements are correct but Statement II does not explain Statement I",
+      "Statement I is correct but Statement II is incorrect",
+      "Statement I is incorrect but Statement II is correct"
+    ],
+    "subject": "Polity",
+    "syllabus_topic": "Federalism and distribution of legislative powers",
+    "answer": "Both statements are correct and Statement II explains Statement I. Option A.",
+    "ncert_book": "Class 11 Indian Constitution at Work, Chapter 7 - Federalism",
+    "page": 159
+  }
+]
