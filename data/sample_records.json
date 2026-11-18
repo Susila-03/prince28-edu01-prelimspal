@@ -2,6 +2,7 @@
 [
   {
     "id": "001",
+    "source_url": "https://upsc.gov.in/sites/default/files/QP_CS_Pre_Exam_2023_280523.pdf",
     "year": 2023,
     "paper": "General Studies Paper I - Set A",
     "q_no": 1,
@@ -16,10 +17,11 @@
     "syllabus_topic": "Indian rivers and lakes",
     "answer": "Only one statement is correct. Option A.",
     "ncert_book": "Class 9 Contemporary India-I, Chapter 3 - Drainage",
-    "page": 27
+    "page": 28
   },
   {
     "id": "002",
+    "source_url": "https://upsc.gov.in/sites/default/files/QP_CS_Pre_Exam_2023_280523.pdf",
     "year": 2023,
     "paper": "General Studies Paper I - Set A",
     "q_no": 3,
@@ -38,6 +40,7 @@
   },
   {
     "id": "003",
+    "source_url": "https://upsc.gov.in/sites/default/files/QP_CS_Pre_Exam_2023_280523.pdf",
     "year": 2023,
     "paper": "General Studies Paper I - Set A",
     "q_no": 15,
@@ -56,6 +59,7 @@
   },
   {
     "id": "004",
+    "source_url": "https://upsc.gov.in/sites/default/files/QP_CS_Pre_Exam_2023_280523.pdf",
     "year": 2023,
     "paper": "General Studies Paper I - Set A",
     "q_no": 31,
@@ -74,6 +78,7 @@
   },
   {
     "id": "005",
+    "source_url": "https://upsc.gov.in/sites/default/files/QP_CS_Pre_Exam_2023_280523.pdf",
     "year": 2023,
     "paper": "General Studies Paper I - Set A",
     "q_no": 32,
