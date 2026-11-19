@@ -42,3 +42,55 @@ The table contains only 5 records, so checking every row is inexpensive. A seque
 **When would it switch to the GIN index?**
 
 When the table grows and PostgreSQL estimates that using the GIN index is more efficient than scanning every row.
+
+
+## D04 · Dockerfile and Image
+
+### Docker image build
+
+Command:
+```text
+docker build -t prelimspal:dev .
+```
+
+Result: Build successful.
+
+### Image size
+
+Command:
+```text
+docker images prelimspal:dev
+```
+
+Result: 300 MB (below the 400 MB target).
+
+### Non-root user verification
+
+Command:
+```text
+docker run --rm prelimspal:dev id
+```
+
+Output:
+```text
+uid=999(app) gid=999(app) groups=999(app)
+```
+
+Result: Container runs as the non-root `app` user.
+
+### Docker build cache verification
+
+Changed the health.py docstring temporarily and rebuilt the image.
+
+Result:
+```text
+CACHED [builder 4/6] RUN ... uv sync --locked --no-install-project --no-dev
+```
+
+The dependency layer was reused.
+
+First build time: approximately 1–3 minutes (record the actual time if available).
+
+Second build time: 53.8 seconds.
+
+The temporary code change was reverted after the cache test.
