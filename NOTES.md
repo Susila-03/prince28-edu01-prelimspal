@@ -94,3 +94,22 @@ First build time: approximately 1–3 minutes (record the actual time if availab
 Second build time: 53.8 seconds.
 
 The temporary code change was reverted after the cache test.
+
+# Project Notes
+
+## Day 03 - PostgreSQL
+(existing notes...)
+
+## Day 04 - Docker
+(existing Docker notes...)
+
+## Docker Compose verification
+- PostgreSQL: healthy
+- Redis: healthy
+- Migrations: Exited (0)
+- API: healthy
+- GET /v1/documents: 200 OK
+- Health check with DB stopped: status=ok
+- Readiness check with DB stopped: not_ready
+- Readiness after DB restart: ready
+- Second loader run: records=5 inserted=0 updated=0 unchanged=5
