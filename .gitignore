@@ -5,3 +5,7 @@ __pycache__/
 .vscode/
 .env
 !.env.example
+
+# Test coverage
+.coverage
+htmlcov/
