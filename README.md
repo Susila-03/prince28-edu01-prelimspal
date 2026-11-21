@@ -2,7 +2,7 @@
 # PrelimsPal
 
 [![CI](https://github.com/Susila-03/prince28-edu01-prelimspal/actions/workflows/ci.yml/badge.svg)](https://github.com/Susila-03/prince28-edu01-prelimspal/actions/workflows/ci.yml)
-[![Live](https://img.shields.io/uptimerobot/status/m804757953-663e99d4ba8f250308d4a0d8)](https://prelimspal-new.onrender.com/docs)
+[![Live](https://img.shields.io/uptimerobot/status/m804761348-f9f9c97692e5a4e2829b8e24)](https://prelimspal-new.onrender.com/docs)
 [![Uptime (30 days)](https://img.shields.io/uptimerobot/ratio/m804761348-f9f9c97692e5a4e2829b8e24)](https://prelimspal-new.onrender.com/health)
 
 **Status:** Week 1 complete · live at https://prelimspal-new.onrender.com
