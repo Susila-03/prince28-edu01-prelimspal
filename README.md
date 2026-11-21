@@ -2,12 +2,18 @@
 # PrelimsPal
 
 [![CI](https://github.com/Susila-03/prince28-edu01-prelimspal/actions/workflows/ci.yml/badge.svg)](https://github.com/Susila-03/prince28-edu01-prelimspal/actions/workflows/ci.yml)
-[![Live](https://img.shields.io/website?url=https%3A%2F%2Fprelimspal-new.onrender.com%2Fhealth&label=live)](https://prelimspal-new.onrender.com/docs)
+[![Live](https://img.shields.io/uptimerobot/status/m804757953-663e99d4ba8f250308d4a0d8)](https://prelimspal-new.onrender.com/docs)
 [![Uptime (30 days)](https://img.shields.io/uptimerobot/ratio/m804757953-663e99d4ba8f250308d4a0d8)](https://prelimspal-new.onrender.com/health)
 
 **Status:** Week 1 complete · live at https://prelimspal-new.onrender.com
 
 PrelimsPal is an AI-powered platform that helps students prepare for UPSC preliminary examinations using NCERT textbooks and previous year questions.
+
+## Live Application
+
+- **API Documentation:** https://prelimspal-new.onrender.com/docs
+- **Health Check:** https://prelimspal-new.onrender.com/health
+- **Readiness Check:** https://prelimspal-new.onrender.com/ready
 
 ## Who it's for
 
@@ -73,7 +79,11 @@ This starts Postgres (with pgvector), Redis, runs the migrations and loads the s
 - Liveness: http://localhost:8000/health
 - Readiness (checks the database): http://localhost:8000/ready
 
-Stop with `Ctrl+C`, then `docker compose down`.
+Stop with `Ctrl+C`, then:
+
+```bash
+docker compose down
+```
 
 Add `-v` to also delete the database volume.
 
