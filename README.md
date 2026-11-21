@@ -2,15 +2,18 @@
 # PrelimsPal
 
 [![CI](https://github.com/Susila-03/prince28-edu01-prelimspal/actions/workflows/ci.yml/badge.svg)](https://github.com/Susila-03/prince28-edu01-prelimspal/actions/workflows/ci.yml)
-[![Live](https://img.shields.io/website?url=https%3A%2F%2Fprelimspal-new.onrender.com%2Fhealth&label=live)](https://prelimspal-new.onrender.com/docs)
+[![Live](https://img.shields.io/uptimerobot/status/m804757953-663e99d4ba8f250308d4a0d8)](https://prelimspal-new.onrender.com/docs)
 [![Uptime (30 days)](https://img.shields.io/uptimerobot/ratio/m804757953-663e99d4ba8f250308d4a0d8)](https://prelimspal-new.onrender.com/health)
 
 **Status:** Week 1 complete · live at https://prelimspal-new.onrender.com
 
 PrelimsPal is an AI-powered platform that helps students prepare for UPSC preliminary examinations using NCERT textbooks and previous year questions.
 
+## Live Application
 
-**Status:** Day 1 – Project foundation.
+- **API Documentation:** https://prelimspal-new.onrender.com/docs
+- **Health Check:** https://prelimspal-new.onrender.com/health
+- **Readiness Check:** https://prelimspal-new.onrender.com/ready
 
 ## Who it's for
 
@@ -18,7 +21,9 @@ Students preparing for UPSC Civil Services preliminary examinations.
 
 ## The problem
 
-Students preparing for UPSC exams often find it difficult to understand concepts from different textbooks. They may struggle to connect previous year questions with the correct syllabus topics. Finding the right information from NCERT textbooks can also take a lot of time. PrelimsPal aims to make learning easier by providing clear explanations and useful references.
+Students preparing for UPSC exams often find it difficult to understand concepts from different textbooks. They may struggle to connect previous year questions with the correct syllabus topics. Finding the right information from NCERT textbooks can also take a lot of time.
+
+PrelimsPal aims to make learning easier by providing clear explanations and useful references.
 
 ## Data sources
 
@@ -27,6 +32,7 @@ Students preparing for UPSC exams often find it difficult to understand concepts
 - NCERT textbooks (Classes 6–12).
 
 Useful links:
+
 - https://upsc.gov.in/
 - https://ncert.nic.in/textbook.php
 
@@ -36,7 +42,7 @@ Explaining statement-based questions accurately by checking multiple NCERT textb
 
 ## Signature feature
 
-Question Explainer – Students can select previous year questions and understand the answers with explanations and NCERT page references.
+**Question Explainer** – Students can select previous year questions and understand the answers with explanations and NCERT page references.
 
 ## Target metric
 
@@ -73,7 +79,13 @@ This starts Postgres (with pgvector), Redis, runs the migrations and loads the s
 - Liveness: http://localhost:8000/health
 - Readiness (checks the database): http://localhost:8000/ready
 
-Stop with `Ctrl+C`, then `docker compose down`. Add `-v` to also delete the database volume.
+Stop with `Ctrl+C`, then:
+
+```bash
+docker compose down
+```
+
+Add `-v` to also delete the database volume.
 
 ## Develop and test
 
