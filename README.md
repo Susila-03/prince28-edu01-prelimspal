@@ -1,5 +1,3 @@
-# PrelimsPal
-
 
 # PrelimsPal
 
@@ -11,16 +9,15 @@
 
 PrelimsPal is an AI-powered platform that helps students prepare for UPSC preliminary examinations using NCERT textbooks and previous year questions.
 
-
-**Status:** Day 1 – Project foundation.
-
 ## Who it's for
 
 Students preparing for UPSC Civil Services preliminary examinations.
 
 ## The problem
 
-Students preparing for UPSC exams often find it difficult to understand concepts from different textbooks. They may struggle to connect previous year questions with the correct syllabus topics. Finding the right information from NCERT textbooks can also take a lot of time. PrelimsPal aims to make learning easier by providing clear explanations and useful references.
+Students preparing for UPSC exams often find it difficult to understand concepts from different textbooks. They may struggle to connect previous year questions with the correct syllabus topics. Finding the right information from NCERT textbooks can also take a lot of time.
+
+PrelimsPal aims to make learning easier by providing clear explanations and useful references.
 
 ## Data sources
 
@@ -29,6 +26,7 @@ Students preparing for UPSC exams often find it difficult to understand concepts
 - NCERT textbooks (Classes 6–12).
 
 Useful links:
+
 - https://upsc.gov.in/
 - https://ncert.nic.in/textbook.php
 
@@ -38,7 +36,7 @@ Explaining statement-based questions accurately by checking multiple NCERT textb
 
 ## Signature feature
 
-Question Explainer – Students can select previous year questions and understand the answers with explanations and NCERT page references.
+**Question Explainer** – Students can select previous year questions and understand the answers with explanations and NCERT page references.
 
 ## Target metric
 
@@ -75,7 +73,9 @@ This starts Postgres (with pgvector), Redis, runs the migrations and loads the s
 - Liveness: http://localhost:8000/health
 - Readiness (checks the database): http://localhost:8000/ready
 
-Stop with `Ctrl+C`, then `docker compose down`. Add `-v` to also delete the database volume.
+Stop with `Ctrl+C`, then `docker compose down`.
+
+Add `-v` to also delete the database volume.
 
 ## Develop and test
 
