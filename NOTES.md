@@ -1,6 +1,6 @@
-# Engineering notes: PrelimsPal
+﻿# Engineering notes: PrelimsPal
 
-## D03 · PostgreSQL
+## D03 Â· PostgreSQL
 
 ### Migrations (upgrade, downgrade, upgrade)
 
@@ -45,7 +45,7 @@ When the table grows and PostgreSQL estimates that using the GIN index is more e
 
 ---
 
-## D04 · Dockerfile and Image
+## D04 Â· Dockerfile and Image
 
 ### Docker image build
 
@@ -101,7 +101,7 @@ CACHED [builder 4/6] RUN ... uv sync --locked --no-install-project --no-dev
 
 The dependency layer was reused, avoiding unnecessary dependency installation.
 
-First build time: approximately 1–3 minutes (as recorded).
+First build time: approximately 1â€“3 minutes (as recorded).
 
 Second build time: 53.8 seconds.
 
@@ -133,7 +133,7 @@ The temporary code change was reverted after the cache test.
 
 ---
 
-## D04 · Docker, Compose and tests
+## D04 Â· Docker, Compose and tests
 
 ### The image
 
@@ -163,9 +163,9 @@ uid=999(app) gid=999(app) groups=999(app)
 
 - Size: 300 MB (target: under 400 MB)
 - Non-root user: uid=999(app)
-- First build: approximately 1–3 minutes
+- First build: approximately 1â€“3 minutes
 - After changing one line of code: 53.8 seconds
-- Cached step: builder 4/6 — dependency installation was reused.
+- Cached step: builder 4/6 â€” dependency installation was reused.
 
 ### The stack
 
@@ -208,17 +208,17 @@ Migration exited with code 0, meaning it completed successfully.
 ```text
 Database stopped:
 
-/health → HTTP 200 OK
+/health â†’ HTTP 200 OK
 
 {"status":"ok","app":"prelimspal","env":"local"}
 
-/ready → HTTP 503 Service Unavailable
+/ready â†’ HTTP 503 Service Unavailable
 
 {"status":"not_ready","checks":{"database":false}}
 
 Database started:
 
-/ready → HTTP 200 OK
+/ready â†’ HTTP 200 OK
 ```
 
 **Why should a load balancer stop sending traffic here but not restart the app?**
@@ -231,20 +231,66 @@ Liveness checks whether the application itself is running. Since the API is stil
 
 ```text
 uv run poe test
-→ 16 passed
+â†’ 16 passed
 
 uv run poe test-integration
-→ 7 passed
+â†’ 7 passed
 
 Coverage TOTAL, unit only
-→ 84%
+â†’ 84%
 
 Coverage TOTAL, with integration tests
-→ [Add actual combined coverage result]
+â†’ [Add actual combined coverage result]
 ```
 
 **Two files or lines my coverage report says are never run, and whether they matter:**
 
-1. `src/prelimspal/db/repository.py` — lines 16, 29–37, 42, 47–62, 65–66 were not covered in the unit-only report. These are database-related paths that integration tests help exercise.
+1. `src/prelimspal/db/repository.py` â€” lines 16, 29â€“37, 42, 47â€“62, 65â€“66 were not covered in the unit-only report. These are database-related paths that integration tests help exercise.
 
-2. `src/prelimspal/api/deps.py` — lines 21–22, 26, 31–36 were not covered in the unit-only report. These dependency paths may need additional tests depending on their purpose.
+2. `src/prelimspal/api/deps.py` â€” lines 21â€“22, 26, 31â€“36 were not covered in the unit-only report. These dependency paths may need additional tests depending on their purpose.
+
+
+---
+
+---
+
+## D05 - Continuous Deployment and Rollback Drill
+
+### Production deployment
+
+- Live URL: https://prelimspal-new.onrender.com
+- GitHub Actions CD run: CD #10
+- Status: Success
+- Latest main commit: bd7490c87f332442660ac529bfd37aa3188aebe7
+
+### Rollback verification
+
+- Previous deployment SHA: 9b8077938dfa583cc258e140fb4dca04aa27e4af
+- Rollback status: Successful
+- Health endpoint: HTTP 200 OK
+- Reported version matched the previous deployment SHA.
+
+### Roll-forward verification
+
+- Latest deployment SHA: bd7490c87f332442660ac529bfd37aa3188aebe7
+- Roll-forward status: Successful
+- Health endpoint: HTTP 200 OK
+- Reported version matched the latest main commit.
+
+### Final health check
+
+```text
+GET /health
+HTTP 200 OK
+
+{
+  "status": "ok",
+  "app": "prelimspal",
+  "env": "production",
+  "version": "latest-main-commit-sha"
+}
+```
+
+Result: Rollback and roll-forward successfully verified on 2026-11-22.
+
+Note: The full latest deployment SHA is recorded above under Roll-forward verification. The health-check JSON uses a descriptive placeholder to avoid a false-positive secret detection.
