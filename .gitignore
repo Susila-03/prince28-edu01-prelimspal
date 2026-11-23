@@ -9,3 +9,6 @@ __pycache__/
 # Test coverage
 .coverage
 htmlcov/
+
+# Source documents (keep local; redistribution permission not verified)
+/data/sources/*.pdf
