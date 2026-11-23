@@ -8,6 +8,7 @@ repos:
       - id: check-yaml
       - id: check-toml
       - id: check-added-large-files
+        exclude: ^data/manifest\.jsonl$
         args: ["--maxkb=500"]
       - id: detect-private-key
   - repo: https://github.com/astral-sh/ruff-pre-commit
@@ -21,4 +22,4 @@ repos:
     hooks:
       - id: detect-secrets
         # uv.lock hashes and Alembic revision ids look random but are not secrets
-        exclude: ^(uv\.lock|migrations/versions/.*)$
+        exclude: ^(uv\.lock|migrations/versions/.*|data/manifest\.jsonl)$
