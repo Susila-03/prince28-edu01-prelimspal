@@ -315,7 +315,7 @@ Pending: verify download and reuse permission before first real ingestion.
 ## D06 · Collecting the corpus
 
 - Start target: 5 years of papers + 15 NCERT books.
-- Measured locally: 16 files, 186 pages, 39.7 MB. This includes 15 NCERT personal-study PDFs and 1 Census XLS; it is not an approved ingestion corpus.
+- Measured locally: 28 files, 754 pages, 282.7 MB. This includes 10 manually downloaded UPSC papers (2022–2026, Papers I and II), 15 NCERT personal-study PDFs, 1 Census XLS, and 2 local test files. UPSC and NCERT permissions still need verification; this is not an approved ingestion corpus.
 - Doors used: By hand and local personal-study copies.
 
 ### Licence check
@@ -341,9 +341,9 @@ Pending: verify download and reuse permission before first real ingestion.
 
 ### Capacity
 
-- Tokens per page, measured: 378.
-- Full corpus: 4.54 M tokens, 13,053 chunks, embedding about Rs 74, vectors 40 MB.
-- The number that surprised me most was the estimated 4.54 million tokens. It shows how quickly a large document collection can grow.
+- Tokens per page, measured: 205.
+- Full 12,000-page corpus estimate: 2.46 M tokens, 7,069 chunks, embedding about Rs 40, vector storage 22 MB, and text storage 12 MB.
+- The number that surprised me most was the estimated 2.46 million tokens. It shows how quickly a large document collection can grow.
 
 ### One thing that went wrong today, and how I fixed it
 
