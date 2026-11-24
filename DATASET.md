@@ -1,4 +1,4 @@
-
+﻿
 # Dataset: PrelimsPal
 
 Explains UPSC prelims questions and topics using NCERT textbooks, with page citations, and maps each past question to the syllabus.
@@ -22,18 +22,20 @@ Public papers and free-to-read textbooks: use for study, cite pages, do not repu
 - Personal-study copies are used only for local capacity measurement and are not approved for corpus ingestion or redistribution.
 
 <!-- generated:start -->
-## Sources (generated 2026-11-24 12:14 UTC by scripts/dataset_report.py)
+## Sources (generated 2026-11-24 13:48 UTC by scripts/dataset_report.py)
 
 | Source | Licence / terms | Files | MB | Pages* | How | Fetched | Example URL |
 |---|---|---|---|---|---|---|---|
 | NCERT personal-study copies (local-only measurement) | PERSONAL STUDY COPY; local-only capacity measurement; not approved for corpus ingestion or redistribution | 15 | 39.6 | 186 | local | 2026-11-24 | local-only://ncert/class10_contemporary_india2.pdf |
+| UPSC | MANUAL_ONLY: UPSC reproduction requires prior permission and acknowledgement; third-party rights may apply; local copy only; do not redistribute or display full text without permission | 10 | 242.8 | 488 | manual | 2026-11-24 | https://upsc.gov.in/exam-documents/question-papers/#UPSC_Prelims_2022_GS_Paper_I.pdf |
 | data.gov.in - Primary Census Abstract 2011 | Government Open Data License - India; attribution required; source URL must be acknowledged | 1 | 0.1 | 0 | manual | 2026-11-24 | https://www.data.gov.in/resource/primary-census-abstract-2011-india#PCA0000_2011_MDDS.xls |
+| localtest | TEST_ONLY | 2 | 0.2 | 80 | http | 2026-11-24 | http://127.0.0.1:8765/doc1.txt |
 
-**Total:** 16 files, 39.7 MB, 186 pages. Not downloaded: 0 blocked by robots.txt, 0 failed.
+**Total:** 28 files, 282.7 MB, 754 pages. Not downloaded: 0 blocked by robots.txt, 0 failed.
 
 *Pages = PDF pages, plus one page per 3,000 characters of text or HTML.
 
-## Files (first 16 of 16)
+## Files (first 28 of 28)
 
 The complete list, with a sha256 fingerprint of every file, is `data/manifest.jsonl`.
 
@@ -54,13 +56,25 @@ The complete list, with a sha256 fingerprint of every file, is `data/manifest.js
 | 13 | class12_themes_indian_history_part1 | NCERT personal-study copies (local-only measurement) | 14 | 2026-11-24 | local-only://ncert/class12_themes_indian_history_part1.pdf |
 | 14 | class12_themes_indian_history_part2 | NCERT personal-study copies (local-only measurement) | 16 | 2026-11-24 | local-only://ncert/class12_themes_indian_history_part2.pdf |
 | 15 | class12_themes_indian_history_part3 | NCERT personal-study copies (local-only measurement) | 14 | 2026-11-24 | local-only://ncert/class12_themes_indian_history_part3.pdf |
-| 16 | PCA0000_2011_MDDS | data.gov.in - Primary Census Abstract 2011 |  | 2026-11-24 | https://www.data.gov.in/resource/primary-census-abstract-2011-india#PCA0000_2011_MDDS.xls |
+| 16 | UPSC_Prelims_2022_GS_Paper_I | UPSC | 48 | 2026-11-24 | https://upsc.gov.in/exam-documents/question-papers/#UPSC_Prelims_2022_GS_Paper_I.pdf |
+| 17 | UPSC_Prelims_2022_GS_Paper_II | UPSC | 48 | 2026-11-24 | https://upsc.gov.in/exam-documents/question-papers/#UPSC_Prelims_2022_GS_Paper_II.pdf |
+| 18 | UPSC_Prelims_2023_GS_Paper_I | UPSC | 48 | 2026-11-24 | https://upsc.gov.in/exam-documents/question-papers/#UPSC_Prelims_2023_GS_Paper_I.pdf |
+| 19 | UPSC_Prelims_2023_GS_Paper_II | UPSC | 48 | 2026-11-24 | https://upsc.gov.in/exam-documents/question-papers/#UPSC_Prelims_2023_GS_Paper_II.pdf |
+| 20 | UPSC_Prelims_2024_GS_Paper_I | UPSC | 48 | 2026-11-24 | https://upsc.gov.in/exam-documents/question-papers/#UPSC_Prelims_2024_GS_Paper_I.pdf |
+| 21 | UPSC_Prelims_2024_GS_Paper_II | UPSC | 48 | 2026-11-24 | https://upsc.gov.in/exam-documents/question-papers/#UPSC_Prelims_2024_GS_Paper_II.pdf |
+| 22 | UPSC_Prelims_2025_GS_Paper_I | UPSC | 48 | 2026-11-24 | https://upsc.gov.in/exam-documents/question-papers/#UPSC_Prelims_2025_GS_Paper_I.pdf |
+| 23 | UPSC_Prelims_2025_GS_Paper_II | UPSC | 48 | 2026-11-24 | https://upsc.gov.in/exam-documents/question-papers/#UPSC_Prelims_2025_GS_Paper_II.pdf |
+| 24 | UPSC_Prelims_2026_GS_Paper_I | UPSC | 56 | 2026-11-24 | https://upsc.gov.in/exam-documents/question-papers/#UPSC_Prelims_2026_GS_Paper_I.pdf |
+| 25 | UPSC_Prelims_2026_GS_Paper_II | UPSC | 48 | 2026-11-24 | https://upsc.gov.in/exam-documents/question-papers/#UPSC_Prelims_2026_GS_Paper_II.pdf |
+| 26 | PCA0000_2011_MDDS | data.gov.in - Primary Census Abstract 2011 |  | 2026-11-24 | https://www.data.gov.in/resource/primary-census-abstract-2011-india#PCA0000_2011_MDDS.xls |
+| 27 | Demo document 1 | localtest | 40 | 2026-11-24 | http://127.0.0.1:8765/doc1.txt |
+| 28 | Demo document 2 | localtest | 40 | 2026-11-24 | http://127.0.0.1:8765/doc2.txt |
 <!-- generated:end -->
 
 ## Known gaps
 
-- No UPSC previous-year question papers have been added to the manifest yet. The start target requires 5 years of papers.
-- Only 15 NCERT PDF files are currently available, totalling 186 pages. Their completeness and edition coverage still need verification.
+- The start target of 5 years of UPSC Prelims papers (2022-2026, Papers I and II) has been collected and registered in the manifest. Their reproduction and software-use permissions still need verification.
+- 15 NCERT PDF files are available for local capacity measurement. Their completeness and edition coverage still need verification.
 - The full target of 12 years of UPSC papers and 60 NCERT books (12,000+ pages) has not been reached.
 - The 15 NCERT PDFs are personal-study copies used only for local capacity measurement. They are not approved for corpus ingestion or redistribution.
 - The Census XLS file is recorded in the manifest but its contents are not measured by the current PDF/text reporting script.
