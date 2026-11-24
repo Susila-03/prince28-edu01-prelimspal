@@ -12,3 +12,10 @@ htmlcov/
 
 # Source documents (keep local; redistribution permission not verified)
 /data/sources/**/*.pdf
+
+# Personal reference documents (do not commit)
+/data/raw/
+/data/sources_backup.csv
+
+# Backup of selected NCERT book register (local only)
+/data/ncert_selected_books_backup.csv
