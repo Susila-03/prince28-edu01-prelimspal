@@ -294,3 +294,18 @@ HTTP 200 OK
 Result: Rollback and roll-forward successfully verified on 2026-11-22.
 
 Note: The full latest deployment SHA is recorded above under Roll-forward verification. The health-check JSON uses a descriptive placeholder to avoid a false-positive secret detection.
+
+---
+
+## D06 - Downloader: Interrupt and Resume Test
+
+### Local test-server verification
+
+Two test files used. First run: 1 downloaded, then Ctrl+C.
+Second run: sources=2 downloaded=1 skipped=1 blocked=0 failed=0.
+Result: Resume verified. Completed file skipped; remaining file downloaded.
+No MANUAL_ONLY sources were downloaded.
+
+### Real-source ingestion
+
+Pending: verify download and reuse permission before first real ingestion.
