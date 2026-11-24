@@ -309,3 +309,42 @@ No MANUAL_ONLY sources were downloaded.
 ### Real-source ingestion
 
 Pending: verify download and reuse permission before first real ingestion.
+
+---
+
+## D06 · Collecting the corpus
+
+- Start target: 5 years of papers + 15 NCERT books.
+- Measured locally: 16 files, 186 pages, 39.7 MB. This includes 15 NCERT personal-study PDFs and 1 Census XLS; it is not an approved ingestion corpus.
+- Doors used: By hand and local personal-study copies.
+
+### Licence check
+
+| Source | Licence or terms, in my words | May I show full text in answers? |
+|---|---|---|
+| NCERT | Copyrighted textbooks; personal study permitted, but software incorporation and redistribution are restricted. | No, not without written permission. |
+| UPSC | Reproduction requires permission; direct hyperlinks are permitted. | No, not without verifying permission. |
+| Census 2011 | Government Open Data License - India; attribution required. | Yes, subject to licence conditions and third-party rights. |
+
+### robots.txt
+
+- Sites: https://ncert.nic.in/robots.txt and https://upsc.gov.in/robots.txt
+- Both returned HTTP 200 with HTML content instead of robots.txt directives. Their crawler rules could not be verified.
+- Was anything blocked for my bot? No files were reported blocked by robots.txt. Automated download permission was not verified, so sources remain MANUAL_ONLY.
+
+### Kill and resume
+
+- Run 1: Pressed Ctrl+C after 1 file.
+- Run 2: downloaded=1 skipped=1 blocked=0 failed=0.
+- Run 3: downloaded=2 skipped=0 blocked=0 failed=0 (files downloaded again).
+- Run 4: downloaded=0 skipped=2 blocked=0 failed=0 (resume verified).
+
+### Capacity
+
+- Tokens per page, measured: 378.
+- Full corpus: 4.54 M tokens, 13,053 chunks, embedding about Rs 74, vectors 40 MB.
+- The number that surprised me most was the estimated 4.54 million tokens. It shows how quickly a large document collection can grow.
+
+### One thing that went wrong today, and how I fixed it
+
+The robots.txt URLs returned HTML pages instead of crawler directives. I recorded the results as unverified and kept the sources MANUAL_ONLY rather than assuming automated download permission.
