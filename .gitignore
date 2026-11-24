@@ -11,4 +11,4 @@ __pycache__/
 htmlcov/
 
 # Source documents (keep local; redistribution permission not verified)
-/data/sources/*.pdf
+/data/sources/**/*.pdf
