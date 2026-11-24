@@ -34,7 +34,11 @@ Assumptions: 4 characters per token, 400-token chunks, 768-dimension embeddings 
 ## What I conclude
 
 1. No. The estimated one-time embedding cost for the full corpus is only $0.78 (approximately ₹74).
-2. The estimated vector and text storage is 62 MB, excluding indexes and database overhead. I will compare this with my database's free storage limit.
+2. The estimated vector and text data require about 62 MB.
+My Neon free plan includes 1 GB of storage, and current usage is
+39.99 MB. The estimated total is approximately 102 MB, which fits
+within the 1 GB limit. However, indexes and database overhead
+may increase actual storage usage.
 3. The token and chunk estimates are least certain because they use assumptions. I will measure actual tokens and chunks after implementing document processing.
 4. Storage, tokens, chunks and embedding cost will increase approximately 10 times if the corpus grows 10 times.
    I will review database capacity, batch embedding and optimize vector indexing and retrieval.
