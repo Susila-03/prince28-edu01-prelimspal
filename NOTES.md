@@ -355,25 +355,53 @@ The robots.txt URLs returned HTML pages instead of crawler directives. I recorde
 
 ### Full corpus parsing and idempotency
 
-- Approved files: 1
-- Already parsed: 1
-- Files needing processing: 0
-- Previous failures: 0
+Approved files: 2
+
+Parsed documents:
+- Census PCA: 22 pages
+- IMD rainfall CSV: 154 pages
+
+Total parsed documents: 2
+Total parsed pages: 176
 
 First full run:
-- No files needed processing.
+```text
+approved_files=2
+already_parsed=2
+failed_before=0
+files_to_process=0
+No files need processing.
+```
 
 Second full run:
-- No files needed processing.
-- Confirmed idempotency: no duplicate documents or pages created.
+```text
+approved_files=2
+already_parsed=2
+failed_before=0
+files_to_process=0
+No files need processing.
+```
+
+Result: Both runs confirmed that previously parsed files were skipped. No duplicate documents or pages were created.
 
 ### Parse failure summary
 
-SQL query on `parse_failures` returned no rows.
+SQL query:
+```sql
+SELECT reason, COUNT(*) AS files, MIN(path) AS example
+FROM parse_failures
+GROUP BY reason
+ORDER BY files DESC;
+```
 
-Verification:
-- Total parse failures: 0
+Output:
+```text
+FAILURES BY REASON
+No parse failures found.
+```
 
-Result: 0 failures out of 1 approved file.
+Result: **0 failures out of 2 approved files.**
 
-Note: Other downloaded files remain MANUAL_ONLY or require permission verification. They were not included in parsing.
+No failure fixes were necessary because the failure table was empty.
+
+Note: Other downloaded files remain MANUAL_ONLY or require permission verification. They were not included in the approved parsing corpus.
