@@ -13,6 +13,7 @@ from pathlib import Path
 
 import pymupdf
 import trafilatura
+import xlrd
 from pypdf import PdfReader
 
 TEXT_TYPES = {".md", ".mdx", ".markdown", ".txt", ".rst", ".adoc", ".sgml", ".py"}
@@ -68,7 +69,13 @@ def drop_repeated_lines(pages: list[str]) -> list[str]:
     seen: Counter[str] = Counter()
     for page in pages:
         lines = [ln for ln in page.splitlines() if ln.strip()]
-        seen.update({key(ln) for ln in lines[:2] + lines[-2:] if not ln.startswith("#")})
+        seen.update(
+            {
+                key(ln)
+                for ln in lines[:2] + lines[-2:]
+                if not ln.startswith("#") and not ln.lstrip().startswith("|")
+            }
+        )
     repeated = {k for k, count in seen.items() if count >= 0.6 * len(pages)}
     cleaned = []
     for page in pages:
@@ -226,6 +233,13 @@ def parse_pdf_pypdf(path: Path) -> ParsedDoc:
     return finish("pypdf", "pdf", "", texts)
 
 
+PDF_PARSERS = {
+    "pymupdf": parse_pdf_pymupdf,
+    "pypdf": parse_pdf_pypdf,
+    "ocr": parse_pdf_ocr,
+}
+
+
 # ---------- HTML ----------
 def parse_html(path: Path) -> ParsedDoc:
     html = path.read_text(encoding="utf-8", errors="replace")
@@ -283,13 +297,72 @@ def parse_text(path: Path) -> ParsedDoc:
     return finish("plain", "text", "", split_pages(markup_to_markdown(text, suffix)))
 
 
-PDF_PARSERS = {"pymupdf": parse_pdf_pymupdf, "pypdf": parse_pdf_pypdf}
+def parse_xls(path: Path) -> ParsedDoc:
+    """Read an Excel XLS workbook and convert sheets into Markdown pages."""
+    try:
+        workbook = xlrd.open_workbook(str(path))
+        texts = []
+
+        for sheet in workbook.sheets():
+            rows = []
+
+            for row_index in range(sheet.nrows):
+                values = [
+                    str(sheet.cell_value(row_index, col_index))
+                    .replace("|", "\\|")
+                    .replace("\n", " ")
+                    for col_index in range(sheet.ncols)
+                ]
+
+                if any(value.strip() for value in values):
+                    rows.append(values)
+
+            if not rows:
+                continue
+
+            headers = rows[0]
+            width = len(headers)
+
+            # Split data into manageable pages of five rows.
+            data_rows = rows[1:]
+
+            if not data_rows:
+                data_rows = [[]]
+
+            for start in range(0, len(data_rows), 5):
+                chunk = data_rows[start : start + 5]
+
+                lines = []
+                if start == 0:
+                    lines.append(f"# {sheet.name}")
+                    lines.append("")
+
+                lines.append("| " + " | ".join(headers) + " |")
+                lines.append("| " + " | ".join(["---"] * width) + " |")
+
+                for row in chunk:
+                    row = (row + [""] * width)[:width]
+                    lines.append("| " + " | ".join(row) + " |")
+
+                texts.append("\n".join(lines))
+
+        if not texts:
+            raise ParseError("empty", "Excel workbook contains no data")
+
+        return finish("xlrd", "data", path.stem, texts)
+
+    except ParseError:
+        raise
+    except Exception as exc:
+        raise ParseError("corrupt", str(exc)) from exc
 
 
 def parse_file(path: Path, pdf_parser: str = "pymupdf") -> ParsedDoc:
     """Pick the parser by file type. Raises ParseError, never anything else."""
     suffix = path.suffix.lower()
     try:
+        if suffix == ".xls":
+            return parse_xls(path)
         if suffix == ".pdf":
             return PDF_PARSERS[pdf_parser](path)
         if suffix in {".html", ".htm"}:

@@ -202,3 +202,54 @@ def test_comments_inside_code_blocks_are_not_headings(tmp_path):
     found, _ = parse.headings_in(doc.pages[0].text)
     assert found == [(1, "Install"), (2, "Next steps")]
     assert doc.title == "Install"
+
+
+def test_xls_is_split_into_pages_with_repeated_headers(tmp_path, monkeypatch):
+    class FakeSheet:
+        name = "Census"
+        rows = [
+            ["State Code", "State Name"],
+            ["01", "JAMMU & KASHMIR"],
+            ["02", "HIMACHAL PRADESH"],
+            ["03", "PUNJAB"],
+            ["04", "CHANDIGARH"],
+            ["05", "UTTARAKHAND"],
+            ["06", "HARYANA"],
+            ["07", "DELHI"],
+            ["08", "RAJASTHAN"],
+            ["09", "UTTAR PRADESH"],
+            ["10", "BIHAR"],
+            ["11", "SIKKIM"],
+        ]
+        nrows = len(rows)
+        ncols = 2
+
+        def cell_value(self, row, col):
+            return self.rows[row][col]
+
+    class FakeWorkbook:
+        def sheets(self):
+            return [FakeSheet()]
+
+    monkeypatch.setattr(
+        parse.xlrd,
+        "open_workbook",
+        lambda path: FakeWorkbook(),
+    )
+
+    xls = tmp_path / "census.xls"
+    xls.write_bytes(b"fake Excel file")
+
+    doc = parse_file(xls)
+
+    assert doc.parser == "xlrd"
+    assert doc.kind == "data"
+    assert len(doc.pages) == 3
+
+    for page in doc.pages:
+        assert "State Code" in page.text
+        assert "State Name" in page.text
+
+    combined_text = "\n".join(page.text for page in doc.pages)
+    assert "JAMMU & KASHMIR" in combined_text
+    assert "SIKKIM" in combined_text
