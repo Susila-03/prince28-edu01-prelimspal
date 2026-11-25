@@ -21,7 +21,7 @@ def load_records() -> list[dict]:
     approved = {
         source.url: source
         for source in read_sources(ROOT / "data" / "sources.csv")
-        if source.licence.upper().startswith("APPROVED_FOR_INGESTION:")
+        if source.ingestion_permission == "APPROVED_FOR_INGESTION"
     }
 
     manifest_path = ROOT / "data" / "manifest.jsonl"

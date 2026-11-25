@@ -1,15 +1,15 @@
 ﻿# PrelimsPal source register
 # MANUAL_ONLY means do not automatically download or ingest.
 # Review publisher terms before changing any row to AUTO_DOWNLOAD.
-url,source,licence,title
-https://ncert.nic.in/textbook/pdf/kegy104.pdf,ncert,"MANUAL_ONLY: NCERT textbook; personal study/reference only; no software incorporation or redistribution without permission",Class 11 Geography - Climate
-https://ncert.nic.in/textbook/pdf/keps202.pdf,ncert,"MANUAL_ONLY: NCERT textbook; personal study/reference only; no software incorporation or redistribution without permission",Class 11 Political Science - Rights
-https://upsc.gov.in/uploads/2026/05/Civil-Services-Preliminary-Examination-2026-Notice-E.pdf,upsc,"MANUAL_ONLY: UPSC reproduction requires prior permission and acknowledgement; download manually",UPSC CSE 2026 Notification
-https://ncert.nic.in/textbook/pdf/keps201.pdf,ncert,"MANUAL_ONLY: NCERT textbook; personal study/reference only; no software incorporation or redistribution without permission",Class 11 Political Science - Constitution
-https://ncert.nic.in/textbook/pdf/lehs104.pdf,ncert,"MANUAL_ONLY: NCERT textbook; personal study/reference only; no software incorporation or redistribution without permission",Class 12 History - Thinkers Beliefs and Buildings
-https://ncert.nic.in/textbook/pdf/lehs101.pdf,ncert,"MANUAL_ONLY: NCERT textbook; personal study/reference only; no software incorporation or redistribution without permission",Class 12 History - Bricks Beads and Bones
-https://ncert.nic.in/textbook/pdf/keec103.pdf,ncert,"MANUAL_ONLY: NCERT textbook; personal study/reference only; no software incorporation or redistribution without permission",Class 11 Economics - Liberalisation Privatisation and Globalisation
-https://mausam.imd.gov.in/imd_latest/monsoonfaq.pdf,imd,"MANUAL_ONLY: IMD reuse and automated-download terms not verified; obtain permission or verify terms first",IMD Monsoon FAQ
-https://mausam.imd.gov.in/shimla/mcdata/monsoon/images/2024/monsoon2024.pdf,imd,"MANUAL_ONLY: IMD reuse and automated-download terms not verified; obtain permission or verify terms first",IMD Monsoon Report 2024
-https://www.indiabudget.gov.in/economicsurvey/doc/echapter.pdf,indiabudget,"MANUAL_ONLY: Economic Survey reuse and automated-download terms not verified; verify terms first",Economic Survey Chapter
-https://www.data.gov.in/resource/primary-census-abstract-2011-india,datagov,"MANUAL_ONLY: Government Open Data License - India; verify dataset-specific terms and publish required attribution before software use",Primary Census Abstract 2011 - India
+url,source,licence,title,download_permission,ingestion_permission
+https://ncert.nic.in/textbook/pdf/kegy104.pdf,ncert,"MANUAL_ONLY: NCERT textbook; personal study/reference only; no software incorporation or redistribution without permission",Class 11 Geography - Climate,MANUAL_ONLY,MANUAL_ONLY
+https://ncert.nic.in/textbook/pdf/keps202.pdf,ncert,"MANUAL_ONLY: NCERT textbook; personal study/reference only; no software incorporation or redistribution without permission",Class 11 Political Science - Rights,MANUAL_ONLY,MANUAL_ONLY
+https://upsc.gov.in/uploads/2026/05/Civil-Services-Preliminary-Examination-2026-Notice-E.pdf,upsc,"MANUAL_ONLY: UPSC reproduction requires prior permission and acknowledgement; download manually",UPSC CSE 2026 Notification,MANUAL_ONLY,MANUAL_ONLY
+https://ncert.nic.in/textbook/pdf/keps201.pdf,ncert,"MANUAL_ONLY: NCERT textbook; personal study/reference only; no software incorporation or redistribution without permission",Class 11 Political Science - Constitution,MANUAL_ONLY,MANUAL_ONLY
+https://ncert.nic.in/textbook/pdf/lehs104.pdf,ncert,"MANUAL_ONLY: NCERT textbook; personal study/reference only; no software incorporation or redistribution without permission",Class 12 History - Thinkers Beliefs and Buildings,MANUAL_ONLY,MANUAL_ONLY
+https://ncert.nic.in/textbook/pdf/lehs101.pdf,ncert,"MANUAL_ONLY: NCERT textbook; personal study/reference only; no software incorporation or redistribution without permission",Class 12 History - Bricks Beads and Bones,MANUAL_ONLY,MANUAL_ONLY
+https://ncert.nic.in/textbook/pdf/keec103.pdf,ncert,"MANUAL_ONLY: NCERT textbook; personal study/reference only; no software incorporation or redistribution without permission",Class 11 Economics - Liberalisation Privatisation and Globalisation,MANUAL_ONLY,MANUAL_ONLY
+https://mausam.imd.gov.in/imd_latest/monsoonfaq.pdf,imd,"MANUAL_ONLY: IMD reuse and automated-download terms not verified; obtain permission or verify terms first",IMD Monsoon FAQ,MANUAL_ONLY,MANUAL_ONLY
+https://mausam.imd.gov.in/shimla/mcdata/monsoon/images/2024/monsoon2024.pdf,imd,"MANUAL_ONLY: IMD reuse and automated-download terms not verified; obtain permission or verify terms first",IMD Monsoon Report 2024,MANUAL_ONLY,MANUAL_ONLY
+https://www.indiabudget.gov.in/economicsurvey/doc/echapter.pdf,indiabudget,"MANUAL_ONLY: Economic Survey reuse and automated-download terms not verified; verify terms first",Economic Survey Chapter,MANUAL_ONLY,MANUAL_ONLY
+https://www.data.gov.in/resource/primary-census-abstract-2011-india,datagov,"MANUAL_ONLY: Government Open Data License - India; verify dataset-specific terms and publish required attribution before software use",Primary Census Abstract 2011 - India,MANUAL_ONLY,MANUAL_ONLY

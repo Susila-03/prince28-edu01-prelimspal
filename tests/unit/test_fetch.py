@@ -245,3 +245,33 @@ def test_read_sources_skips_manual_only_sources(tmp_path):
 
     assert len(sources) == 1
     assert sources[0].url == "https://example.org/b.pdf"
+
+
+def test_read_sources_defaults_permissions_to_manual_only(tmp_path):
+    path = tmp_path / "sources.csv"
+    path.write_text(
+        "url,source,licence,title\nhttps://example.org/a.pdf,example,CC BY 4.0,Report A\n",
+        encoding="utf-8",
+    )
+
+    sources = fetch.read_sources(path)
+
+    assert len(sources) == 1
+    assert sources[0].download_permission == "MANUAL_ONLY"
+    assert sources[0].ingestion_permission == "MANUAL_ONLY"
+
+
+def test_read_sources_reads_explicit_permissions(tmp_path):
+    path = tmp_path / "sources.csv"
+    path.write_text(
+        "url,source,licence,title,download_permission,ingestion_permission\n"
+        "https://example.org/a.pdf,example,CC BY 4.0,Report A,"
+        "AUTO_DOWNLOAD,APPROVED_FOR_INGESTION\n",
+        encoding="utf-8",
+    )
+
+    sources = fetch.read_sources(path)
+
+    assert len(sources) == 1
+    assert sources[0].download_permission == "AUTO_DOWNLOAD"
+    assert sources[0].ingestion_permission == "APPROVED_FOR_INGESTION"

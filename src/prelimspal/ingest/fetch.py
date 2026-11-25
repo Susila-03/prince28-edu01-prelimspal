@@ -58,9 +58,11 @@ Sleep = Callable[[float], Awaitable[None]]
 @dataclass(frozen=True)
 class Source:
     url: str
-    source: str  # short name of the publisher: becomes the folder data/raw/<source>/
-    licence: str  # licence or terms of use. Never empty: no licence, no download.
+    source: str
+    licence: str
     title: str = ""
+    download_permission: str = "MANUAL_ONLY"
+    ingestion_permission: str = "MANUAL_ONLY"
 
 
 class DownloadError(Exception):
@@ -116,25 +118,64 @@ def retry_after_seconds(value: str | None) -> float | None:
 
 
 def read_sources(path: Path) -> list[Source]:
-    """Read data/sources.csv (url, source, licence, title). Lines starting with # are notes."""
+    """Read the source register; permissions default to manual-only."""
     sources: list[Source] = []
     seen: set[str] = set()
+
     with path.open(encoding="utf-8-sig", newline="") as handle:
-        lines = (ln for ln in handle if ln.strip() and not ln.lstrip().startswith("#"))
+        lines = (line for line in handle if line.strip() and not line.lstrip().startswith("#"))
+
         for number, row in enumerate(csv.DictReader(lines), start=1):
             url = (row.get("url") or "").strip()
             name = (row.get("source") or "").strip()
             licence = (row.get("licence") or "").strip()
+            title = (row.get("title") or "").strip()
+
             if urlsplit(url).scheme not in {"http", "https"}:
                 raise ValueError(f"sources row {number}: not an http(s) URL: {url!r}")
+
             if not name or not licence:
                 raise ValueError(f"sources row {number}: source and licence are required: {url}")
 
-            if licence.upper().startswith("MANUAL_ONLY"):
+            # Old source-register entries marked MANUAL_ONLY remain excluded.
+            if (
+                licence.upper().startswith("MANUAL_ONLY")
+                and "download_permission" not in row
+                and "ingestion_permission" not in row
+            ):
                 continue
+
+            download_permission = (row.get("download_permission") or "MANUAL_ONLY").strip().upper()
+            ingestion_permission = (
+                (row.get("ingestion_permission") or "MANUAL_ONLY").strip().upper()
+            )
+
+            if download_permission not in {"AUTO_DOWNLOAD", "MANUAL_ONLY"}:
+                raise ValueError(
+                    f"sources row {number}: invalid download_permission {download_permission!r}"
+                )
+
+            if ingestion_permission not in {
+                "APPROVED_FOR_INGESTION",
+                "MANUAL_ONLY",
+            }:
+                raise ValueError(
+                    f"sources row {number}: invalid ingestion_permission {ingestion_permission!r}"
+                )
+
             if url not in seen:
                 seen.add(url)
-                sources.append(Source(url, name, licence, (row.get("title") or "").strip()))
+                sources.append(
+                    Source(
+                        url=url,
+                        source=name,
+                        licence=licence,
+                        title=title,
+                        download_permission=download_permission,
+                        ingestion_permission=ingestion_permission,
+                    )
+                )
+
     return sources
 
 
