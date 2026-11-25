@@ -1,4 +1,4 @@
-﻿# Engineering notes: PrelimsPal
+# Engineering notes: PrelimsPal
 
 ## D03 Â· PostgreSQL
 
@@ -348,3 +348,105 @@ Pending: verify download and reuse permission before first real ingestion.
 ### One thing that went wrong today, and how I fixed it
 
 The robots.txt URLs returned HTML pages instead of crawler directives. I recorded the results as unverified and kept the sources MANUAL_ONLY rather than assuming automated download permission.
+
+---
+
+## D07 - Parsing and Failure Handling
+
+### Full corpus parsing and idempotency
+
+Approved files: 2
+
+Parsed documents:
+- Census PCA: 22 pages
+- IMD rainfall CSV: 154 pages
+
+Total parsed documents: 2
+Total parsed pages: 176
+
+First full run:
+```text
+approved_files=2
+already_parsed=2
+failed_before=0
+files_to_process=0
+No files need processing.
+```
+
+Second full run:
+```text
+approved_files=2
+already_parsed=2
+failed_before=0
+files_to_process=0
+No files need processing.
+```
+
+Result: Both runs confirmed that previously parsed files were skipped. No duplicate documents or pages were created.
+
+### Parse failure summary
+
+SQL query:
+```sql
+SELECT reason, COUNT(*) AS files, MIN(path) AS example
+FROM parse_failures
+GROUP BY reason
+ORDER BY files DESC;
+```
+
+Output:
+```text
+FAILURES BY REASON
+No parse failures found.
+```
+
+Result: **0 failures out of 2 approved files.**
+
+No failure fixes were necessary because the failure table was empty.
+
+Note: Other downloaded files remain MANUAL_ONLY or require permission verification. They were not included in the approved parsing corpus.
+
+## D07 · Parsing my corpus
+
+- Files in the manifest: 29 · parsed: 2 · failed: 0 · pages in Postgres: 176
+- Parsing coverage: 6.90% of all manifest files (2/29); 100% of approved files (2/2)
+
+### Failures by reason
+
+| Reason | Files | What I did |
+|---|---:|---|
+| None | 0 | No parse failures; no retry or fix was needed. |
+
+- The one I fixed: None — there were 0 parse failures.
+
+### What I saw when I read my parsed pages
+
+- A page where the heading path is right: PCA, page 2, path `["PCA"]`.
+- Something that came out wrong: IMD rainfall CSV, page 2, a row boundary appears missing between `533.3` and `Andaman & Nicobar Islands,1931`.
+- A table: PCA, page 1, extracted as a Markdown grid. The long header repeats on subsequent pages and appears to contain duplicate column names. The IMD rainfall data is raw CSV text, not a Markdown table.
+- I inspected pages from the two parsed documents available in Neon: PCA and Sub_Division_IMD_2017.
+
+### My parser choice
+
+- For simple synthetic PDFs, I prefer pypdf because it was faster (0.00–0.04s versus 0.03–0.17s) with nearly identical extracted text. Real corpus PDFs remain untested.
+- A kind of document in my corpus that neither parser handles well: Not evaluated yet; no approved PDF comparison has been completed.
+
+### One thing that went wrong today, and how I fixed it
+
+I initially queried the local Docker database, which had 0 parsed pages. I checked the application database settings and queried the configured Neon database instead; it showed 176 pages and 0 parse failures.
+
+
+## Parser comparison - synthetic samples (not corpus files)
+
+| File | Parser 1 | Parser 2 | Better parser and why |
+|---|---|---|---|
+| sample_1.pdf | PyMuPDF: 1 pages, 112 chars, 0 headings, 0 tables, 0.17s | pypdf: 1 pages, 111 chars, 0 headings, 0 tables, 0.04s | pypdf: same page/headings/tables; faster in this sample. |
+| sample_10.html | Trafilatura: 1 pages, 100 chars, 0 headings, 0 tables, 0.06s | Plain tag stripping: 1 pages, 129 chars, 0 headings, 0 tables, 0.00s | Trafilatura: cleaner text; plain stripping may retain footer/noise. |
+| sample_2.pdf | PyMuPDF: 1 pages, 112 chars, 0 headings, 0 tables, 0.04s | pypdf: 1 pages, 111 chars, 0 headings, 0 tables, 0.01s | pypdf: same page/headings/tables; faster in this sample. |
+| sample_3.pdf | PyMuPDF: 1 pages, 112 chars, 0 headings, 0 tables, 0.04s | pypdf: 1 pages, 111 chars, 0 headings, 0 tables, 0.01s | pypdf: same page/headings/tables; faster in this sample. |
+| sample_4.pdf | PyMuPDF: 1 pages, 112 chars, 0 headings, 0 tables, 0.04s | pypdf: 1 pages, 111 chars, 0 headings, 0 tables, 0.01s | pypdf: same page/headings/tables; faster in this sample. |
+| sample_5.pdf | PyMuPDF: 1 pages, 112 chars, 0 headings, 0 tables, 0.03s | pypdf: 1 pages, 111 chars, 0 headings, 0 tables, 0.00s | pypdf: same page/headings/tables; faster in this sample. |
+| sample_6.html | Trafilatura: 1 pages, 99 chars, 0 headings, 0 tables, 0.04s | Plain tag stripping: 1 pages, 127 chars, 0 headings, 0 tables, 0.00s | Trafilatura: cleaner text; plain stripping may retain footer/noise. |
+| sample_7.html | Trafilatura: 1 pages, 99 chars, 0 headings, 0 tables, 0.04s | Plain tag stripping: 1 pages, 127 chars, 0 headings, 0 tables, 0.00s | Trafilatura: cleaner text; plain stripping may retain footer/noise. |
+| sample_8.html | Trafilatura: 1 pages, 99 chars, 0 headings, 0 tables, 0.04s | Plain tag stripping: 1 pages, 127 chars, 0 headings, 0 tables, 0.00s | Trafilatura: cleaner text; plain stripping may retain footer/noise. |
+| sample_9.html | Trafilatura: 1 pages, 99 chars, 0 headings, 0 tables, 0.04s | Plain tag stripping: 1 pages, 127 chars, 0 headings, 0 tables, 0.00s | Trafilatura: cleaner text; plain stripping may retain footer/noise. |

@@ -39,10 +39,14 @@ def read_sources() -> list[dict[str, str]]:
         if parsed.scheme != "https" or not parsed.netloc:
             raise ValueError(f"Row {number}: a valid HTTPS URL is required.")
 
-        if not row["licence"].startswith(("MANUAL_ONLY:", "AUTO_DOWNLOAD:")):
+        download_permission = (row.get("download_permission") or "MANUAL_ONLY").strip().upper()
+
+        if download_permission not in {"MANUAL_ONLY", "AUTO_DOWNLOAD"}:
             raise ValueError(
-                f"Row {number}: licence must start with MANUAL_ONLY: or AUTO_DOWNLOAD:."
+                f"Row {number}: download_permission must be MANUAL_ONLY or AUTO_DOWNLOAD."
             )
+
+        row["download_permission"] = download_permission
 
     return rows
 
@@ -135,7 +139,7 @@ def main() -> None:
 
     with httpx.Client(timeout=20.0, follow_redirects=False) as client:
         for row in rows:
-            if row["licence"].startswith("MANUAL_ONLY:"):
+            if row["download_permission"] != "AUTO_DOWNLOAD":
                 print(f"MANUAL ONLY: {row['title']}")
                 skipped += 1
                 continue
