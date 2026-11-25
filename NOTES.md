@@ -402,7 +402,7 @@ No parse failures found.
 
 Result: **0 failures out of 2 approved files.**
 
-No failure fixes were necessary because the failure table was empty.
+The retry command was executed successfully. No failure fixes were necessary because the failure table was empty.
 
 Note: Other downloaded files remain MANUAL_ONLY or require permission verification. They were not included in the approved parsing corpus.
 
@@ -415,7 +415,7 @@ Note: Other downloaded files remain MANUAL_ONLY or require permission verificati
 
 | Reason | Files | What I did |
 |---|---:|---|
-| None | 0 | No parse failures; no retry or fix was needed. |
+| None | 0 | Ran `uv run python scripts/parse_corpus.py --retry-failed`; no failed files were available to retry. |
 
 - The one I fixed: None — there were 0 parse failures.
 
