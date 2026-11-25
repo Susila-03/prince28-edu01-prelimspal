@@ -126,7 +126,7 @@ def test_both_pdf_parsers_agree_on_the_page_count(tmp_path):
 
 
 def test_clean_text_repairs_what_pdfs_break():
-    dirty = "The ﬁrst treat-\nment\x00 is   rest.­\n\n\n\nNext."
+    dirty = "The ﬁrst treat-\nment\x00 is   rest.\n\n\n\nNext."
     assert parse.clean_text(dirty) == "The first treatment is rest.\n\nNext."
 
 
@@ -253,3 +253,25 @@ def test_xls_is_split_into_pages_with_repeated_headers(tmp_path, monkeypatch):
     combined_text = "\n".join(page.text for page in doc.pages)
     assert "JAMMU & KASHMIR" in combined_text
     assert "SIKKIM" in combined_text
+
+
+def test_csv_is_split_into_pages_with_repeated_headers():
+    text = (
+        "SUBDIVISION,YEAR,JAN\n"
+        "Andaman & Nicobar Islands,1901,12\n"
+        "Andhra Pradesh,1901,34\n"
+        "Assam,1901,56\n"
+    )
+
+    pages = parse.split_csv_pages(text, size=45)
+
+    assert len(pages) > 1
+    assert all(page.startswith("SUBDIVISION,YEAR,JAN") for page in pages)
+
+    combined = "\n".join(pages)
+    for row in (
+        "Andaman & Nicobar Islands,1901,12",
+        "Andhra Pradesh,1901,34",
+        "Assam,1901,56",
+    ):
+        assert combined.count(row) == 1

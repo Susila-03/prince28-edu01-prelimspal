@@ -5,6 +5,8 @@ with a reason. Every page keeps its page number and the section path it starts i
 because answers will cite "document, page, section".
 """
 
+import csv
+import io
 import re
 import unicodedata
 from collections import Counter
@@ -121,8 +123,16 @@ def with_heading_paths(texts: list[str]) -> list[ParsedPage]:
     return pages
 
 
-def finish(parser: str, kind: str, title: str, texts: list[str]) -> ParsedDoc:
-    texts = drop_repeated_lines([clean_text(t) for t in texts])
+def finish(
+    parser: str,
+    kind: str,
+    title: str,
+    texts: list[str],
+    remove_repeated: bool = True,
+) -> ParsedDoc:
+    texts = [clean_text(t) for t in texts]
+    if remove_repeated:
+        texts = drop_repeated_lines(texts)
     texts = [clean_text(t) for t in texts]
     if not any(texts):
         raise ParseError("empty", "no text after cleaning")
@@ -289,12 +299,64 @@ def split_pages(text: str, size: int = PAGE_CHARS) -> list[str]:
     return pages
 
 
+def split_csv_pages(text: str, size: int = PAGE_CHARS) -> list[str]:
+    """Split CSV into pages of complete rows, repeating the header."""
+    rows = list(csv.reader(io.StringIO(text)))
+    if not rows:
+        return []
+
+    header = rows[0]
+
+    def render(page_rows: list[list[str]]) -> str:
+        buffer = io.StringIO()
+        writer = csv.writer(buffer, lineterminator="\n")
+        writer.writerows(page_rows)
+        return buffer.getvalue().rstrip("\n")
+
+    header_text = render([header])
+    pages: list[str] = []
+    current = [header]
+    length = len(header_text)
+
+    for row in rows[1:]:
+        row_text = render([row])
+
+        if len(current) > 1 and length + 1 + len(row_text) > size:
+            pages.append(render(current))
+            current = [header]
+            length = len(header_text)
+
+        current.append(row)
+        length += 1 + len(row_text)
+
+    if len(current) > 1 or not pages:
+        pages.append(render(current))
+
+    return pages
+
+
 def parse_text(path: Path) -> ParsedDoc:
     suffix = path.suffix.lower()
     text = path.read_text(encoding="utf-8", errors="replace")
+
+    if suffix == ".csv":
+        return finish(
+            "plain",
+            "data",
+            path.stem,
+            split_csv_pages(text),
+            remove_repeated=False,
+        )
+
     if suffix in DATA_TYPES:
         return finish("plain", "data", path.stem, split_pages(text))
-    return finish("plain", "text", "", split_pages(markup_to_markdown(text, suffix)))
+
+    return finish(
+        "plain",
+        "text",
+        "",
+        split_pages(markup_to_markdown(text, suffix)),
+    )
 
 
 def parse_xls(path: Path) -> ParsedDoc:
