@@ -11,7 +11,13 @@ from prelimspal.config import get_settings
 from prelimspal.db.session import make_engine, make_sessionmaker
 from prelimspal.ingest.fetch import read_sources
 from prelimspal.ingest.parse import ParseError, parse_file
-from prelimspal.ingest.store import document_id, parsed_ids, save_document, save_failure
+from prelimspal.ingest.store import (
+    document_id,
+    failed_paths,
+    parsed_ids,
+    save_document,
+    save_failure,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -51,7 +57,6 @@ def load_records() -> list[dict]:
         if not path.is_file():
             continue
 
-        # Use the current approved source-register details.
         record["source"] = source.source
         record["licence"] = source.licence
         record["title"] = source.title or record.get("title", "")
@@ -61,12 +66,12 @@ def load_records() -> list[dict]:
     return records
 
 
-async def run(limit: int) -> None:
+async def run(limit: int | None, retry_failed: bool) -> None:
     records = load_records()
 
     if not records:
         print("No approved downloaded files are available for parsing.")
-        print("Review data/sources.csv and add only appropriately approved sources.")
+        print("Review data/sources.csv and approve only eligible sources.")
         return
 
     settings = get_settings()
@@ -82,16 +87,34 @@ async def run(limit: int) -> None:
     try:
         async with sessions() as session:
             existing = await parsed_ids(session)
+            previous_failures = await failed_paths(session)
 
-            pending = [
-                record for record in records if document_id(record["sha256"]) not in existing
-            ][:limit]
+            already_parsed = sum(document_id(record["sha256"]) in existing for record in records)
+            failed_before = sum(record["path"] in previous_failures for record in records)
+
+            if retry_failed:
+                pending = [record for record in records if record["path"] in previous_failures]
+            else:
+                pending = [
+                    record
+                    for record in records
+                    if document_id(record["sha256"]) not in existing
+                    and record["path"] not in previous_failures
+                ]
+
+            if limit is not None:
+                pending = pending[:limit]
 
             print(f"approved_files={len(records)}")
-            print(f"already_parsed={len(records) - len(pending)}")
+            print(f"already_parsed={already_parsed}")
+            print(f"failed_before={failed_before}")
             print(f"files_to_process={len(pending)}")
 
-            for record in pending:
+            if not pending:
+                print("No files need processing.")
+                return
+
+            for index, record in enumerate(pending, start=1):
                 path = ROOT / record["path"]
 
                 try:
@@ -99,19 +122,20 @@ async def run(limit: int) -> None:
                     await save_document(session, record, result)
                     parsed += 1
                     pages += len(result.pages)
-                    print(f"parsed: {record['path']} ({len(result.pages)} pages)")
 
                 except ParseError as error:
                     await save_failure(session, record, error)
                     failed += 1
                     reasons[error.reason] += 1
-                    print(f"failed {error.reason} {record['path']}")
+
+                if index % 50 == 0 or index == len(pending):
+                    print(f"progress={index}/{len(pending)} parsed={parsed} failed={failed}")
 
         elapsed = time.perf_counter() - started
 
         print(
             f"files={len(pending)} parsed={parsed} "
-            f"pages={pages} failed={failed} seconds={elapsed:.1f}"
+            f"failed={failed} pages={pages} seconds={elapsed:.1f}"
         )
 
         if reasons:
@@ -126,13 +150,23 @@ async def run(limit: int) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Parse approved corpus files.")
-    parser.add_argument("--limit", type=int, default=20)
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Maximum number of files to process.",
+    )
+    parser.add_argument(
+        "--retry-failed",
+        action="store_true",
+        help="Retry previously failed approved files.",
+    )
     args = parser.parse_args()
 
-    if args.limit < 1:
+    if args.limit is not None and args.limit < 1:
         parser.error("--limit must be at least 1")
 
-    asyncio.run(run(args.limit))
+    asyncio.run(run(args.limit, args.retry_failed))
 
 
 if __name__ == "__main__":

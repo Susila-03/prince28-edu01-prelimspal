@@ -348,3 +348,32 @@ Pending: verify download and reuse permission before first real ingestion.
 ### One thing that went wrong today, and how I fixed it
 
 The robots.txt URLs returned HTML pages instead of crawler directives. I recorded the results as unverified and kept the sources MANUAL_ONLY rather than assuming automated download permission.
+
+---
+
+## D07 - Parsing and Failure Handling
+
+### Full corpus parsing and idempotency
+
+- Approved files: 1
+- Already parsed: 1
+- Files needing processing: 0
+- Previous failures: 0
+
+First full run:
+- No files needed processing.
+
+Second full run:
+- No files needed processing.
+- Confirmed idempotency: no duplicate documents or pages created.
+
+### Parse failure summary
+
+SQL query on `parse_failures` returned no rows.
+
+Verification:
+- Total parse failures: 0
+
+Result: 0 failures out of 1 approved file.
+
+Note: Other downloaded files remain MANUAL_ONLY or require permission verification. They were not included in parsing.
