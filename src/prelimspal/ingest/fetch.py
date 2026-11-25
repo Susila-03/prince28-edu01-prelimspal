@@ -132,7 +132,6 @@ def read_sources(path: Path) -> list[Source]:
 
             if licence.upper().startswith("MANUAL_ONLY"):
                 continue
-
             if url not in seen:
                 seen.add(url)
                 sources.append(Source(url, name, licence, (row.get("title") or "").strip()))
