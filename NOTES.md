@@ -472,3 +472,16 @@ I initially queried the local Docker database, which had 0 parsed pages. I check
 - Conclusion: repeatability and idempotency verified for the currently approved corpus.
 - Scope limitation: only 2 files are approved for ingestion. Manual-only and permission-unverified sources were not parsed. The 20-file target remains pending approval of additional sources.
 - Note: an initial run could not resolve the Neon hostname. DNS resolution succeeded afterward, and both full-corpus runs completed successfully.
+
+
+## Milestone 5 - Hard parser comparison (10 synthetic files)
+
+- Scope: 10 locally generated synthetic test files (5 PDF and 5 HTML). These are parser fixtures only; they were not ingested into the database or added to the approved corpus.
+- PDF comparison: PyMuPDF and pypdf both extracted the repaired four-page repeated-header sample. PyMuPDF preserved a ruled table as Markdown and detected headings in the multi-page sample. pypdf extracted more text in the two-column sample, while PyMuPDF's output was shorter.
+- PDF table sample: PyMuPDF detected one table; pypdf returned the cell text without table structure.
+- PDF Unicode sample: both parsers extracted text. The encrypted sample could not be compared fully: PyMuPDF reported that a password was required, while pypdf reported that the optional cryptography package was required for AES support. This is a dependency limitation, not evidence that the PDF is corrupt.
+- HTML comparison: Trafilatura removed more navigation, footer, and script noise than plain tag stripping. It preserved the complex HTML table and detected headings and multiple sections in the long HTML sample. Plain tag stripping was faster in these local runs but retained more page noise and did not preserve table structure.
+- Malformed HTML: both methods extracted usable text from the malformed sample.
+- Fixture correction: the first multi-page PDF used an identical body paragraph on every page. The parser's repeated-line removal treated that paragraph as repeated noise, so the synthetic fixture was repaired with distinct page content before the final comparison. No production parser code was changed.
+- Conclusion: retain PyMuPDF and Trafilatura as the primary extraction choices for their table/layout and article-cleaning capabilities. pypdf and plain tag stripping remain useful comparison/fallback options, with the limitations above.
+- Timing values are environment-dependent and should not be treated as general performance benchmarks.
