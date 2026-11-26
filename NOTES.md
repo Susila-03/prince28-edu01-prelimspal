@@ -461,3 +461,14 @@ I initially queried the local Docker database, which had 0 parsed pages. I check
 - IMD Sub_Division_IMD_2017: inspected pages 150-154. CSV headers and rainfall records are readable. Headings are empty, as expected for CSV data. Content remains comma-separated rather than Markdown tables.
 - PCA: inspected pages 1-5. Census column headers and table content are readable in Markdown pipe format. Page 1 starts with an empty heading path because the PCA heading occurs on that page; pages 2-5 correctly retain ["PCA"].
 - Both approved documents were inspected using Neon SQL queries. Total: 2 documents and 176 pages.
+
+
+## D07 - Full-corpus repeatability and idempotency verification
+
+- First full-corpus run: successful. approved_files=2, already_parsed=2, failed_before=0, files_to_process=0.
+- Second full-corpus run: successful. The output was identical to the first run.
+- Database counts after both runs: 7 documents total (2 data documents and 5 record documents), 176 pages, and 0 parse failures.
+- No additional files were processed. Existing parsed document and page counts remained unchanged.
+- Conclusion: repeatability and idempotency verified for the currently approved corpus.
+- Scope limitation: only 2 files are approved for ingestion. Manual-only and permission-unverified sources were not parsed. The 20-file target remains pending approval of additional sources.
+- Note: an initial run could not resolve the Neon hostname. DNS resolution succeeded afterward, and both full-corpus runs completed successfully.
