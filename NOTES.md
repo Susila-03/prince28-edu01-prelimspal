@@ -450,3 +450,8 @@ I initially queried the local Docker database, which had 0 parsed pages. I check
 | sample_7.html | Trafilatura: 1 pages, 99 chars, 0 headings, 0 tables, 0.04s | Plain tag stripping: 1 pages, 127 chars, 0 headings, 0 tables, 0.00s | Trafilatura: cleaner text; plain stripping may retain footer/noise. |
 | sample_8.html | Trafilatura: 1 pages, 99 chars, 0 headings, 0 tables, 0.04s | Plain tag stripping: 1 pages, 127 chars, 0 headings, 0 tables, 0.00s | Trafilatura: cleaner text; plain stripping may retain footer/noise. |
 | sample_9.html | Trafilatura: 1 pages, 99 chars, 0 headings, 0 tables, 0.04s | Plain tag stripping: 1 pages, 127 chars, 0 headings, 0 tables, 0.00s | Trafilatura: cleaner text; plain stripping may retain footer/noise. |
+
+## D07 validation update
+
+- Full test suite: `uv run pytest` - 68 passed; 1 optional PySocks warning.
+- Corpus retry: `uv run python scripts/parse_corpus.py --retry-failed` - 2 approved files, 2 already parsed, 0 prior failures, 0 files to process.
