@@ -499,5 +499,15 @@ I initially queried the local Docker database, which had 0 parsed pages. I check
 - Integration tests: `uv run poe test-integration` - 11 passed.
 - Live API check: streaming and JSON requests both returned answers through Groq fallback. Gemini returned HTTP 503 during these checks.
 - Observed response times: streaming 37.48s; JSON 13.37s. These are individual local test observations, not benchmarks.
-- Usage endpoint recorded 4 calls, 2 errors, 2 fallbacks, 476 input tokens, 351 output tokens, and ₹0.0134 total.
+- Usage endpoint recorded 4 calls, 2 errors, 2 fallbacks, 476 input tokens, 351 output tokens, and Rs 0.0134 total.
 - Limitation: responses currently use general model knowledge; NCERT document retrieval and grounded citations are not connected yet.
+- Rank prediction test: The assistant correctly declined to predict my rank.
+- Off-topic test (2011 Cricket World Cup): Correctly declined in one sentence.
+- Knowledge test: Fundamental Rights answer was incomplete. It said rights are guaranteed to all citizens, but some Fundamental Rights apply to all persons, not only citizens.
+- Token comparison: English message used 8 tokens; Tamil message used 22 tokens (2.75x in this test).
+- Invalid Gemini model test: HTTP 404; Groq fallback successfully handled requests.
+- Circuit breaker test: Opened after repeated Gemini failures; half-open retry attempted Gemini again after the wait period.
+- Restored Gemini model: Returned HTTP 503; Groq fallback successfully handled the request.
+- Final usage check: 27 calls, 12 errors, 15 fallbacks, 3,551 input tokens, and 2,388 output tokens.
+- Estimated total cost: Rs 0.0934.
+- Neon SQL verification: Confirmed failed Gemini calls and successful Groq fallback calls were recorded in `llm_calls`.
