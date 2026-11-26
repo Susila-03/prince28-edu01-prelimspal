@@ -428,7 +428,8 @@ Note: Other downloaded files remain MANUAL_ONLY or require permission verificati
 
 ### My parser choice
 
-- For simple synthetic PDFs, I prefer pypdf because it was faster (0.00–0.04s versus 0.03–0.17s) with nearly identical extracted text. Real corpus PDFs remain untested.
+- For the 5 hard synthetic PDFs, I prefer PyMuPDF as the primary parser: it detected 3 headings in the multi-page sample and preserved 1 ruled table as Markdown; pypdf detected 0 headings and 0 tables in those samples.
+- pypdf extracted more text in the two-column sample and was faster on simple samples, so it remains a useful fallback. Real corpus PDFs remain untested.
 - A kind of document in my corpus that neither parser handles well: Not evaluated yet; no approved PDF comparison has been completed.
 
 ### One thing that went wrong today, and how I fixed it
