@@ -486,3 +486,18 @@ I initially queried the local Docker database, which had 0 parsed pages. I check
 - Fixture correction: the first multi-page PDF used an identical body paragraph on every page. The parser's repeated-line removal treated that paragraph as repeated noise, so the synthetic fixture was repaired with distinct page content before the final comparison. No production parser code was changed.
 - Conclusion: retain PyMuPDF and Trafilatura as the primary extraction choices for their table/layout and article-cleaning capabilities. pypdf and plain tag stripping remain useful comparison/fallback options, with the limitations above.
 - Timing values are environment-dependent and should not be treated as general performance benchmarks.
+
+
+## D08 - LLM gateway and chat API
+
+- Added Gemini as the primary LLM provider and Groq as the fallback provider, using the OpenAI-compatible API.
+- Added the `llm_calls` table and usage reporting for provider, model, tokens, latency, cost, errors, and fallback usage.
+- Added `POST /v1/chat` with streaming and non-streaming responses, plus `GET /v1/usage`.
+- Added a versioned system prompt at `prompts/chat_system_v1.md` and a CLI client at `scripts/ask.py`.
+- Tests: `uv run poe test` - 83 passed; 1 optional PySocks warning.
+- Lint and formatting: `uv run poe lint` - passed.
+- Integration tests: `uv run poe test-integration` - 11 passed.
+- Live API check: streaming and JSON requests both returned answers through Groq fallback. Gemini returned HTTP 503 during these checks.
+- Observed response times: streaming 37.48s; JSON 13.37s. These are individual local test observations, not benchmarks.
+- Usage endpoint recorded 4 calls, 2 errors, 2 fallbacks, 476 input tokens, 351 output tokens, and ₹0.0134 total.
+- Limitation: responses currently use general model knowledge; NCERT document retrieval and grounded citations are not connected yet.
