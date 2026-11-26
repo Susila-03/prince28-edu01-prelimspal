@@ -455,3 +455,9 @@ I initially queried the local Docker database, which had 0 parsed pages. I check
 
 - Full test suite: `uv run pytest` - 68 passed; 1 optional PySocks warning.
 - Corpus retry: `uv run python scripts/parse_corpus.py --retry-failed` - 2 approved files, 2 already parsed, 0 prior failures, 0 files to process.
+
+## D07 - Parsed page reading review
+
+- IMD Sub_Division_IMD_2017: inspected pages 150-154. CSV headers and rainfall records are readable. Headings are empty, as expected for CSV data. Content remains comma-separated rather than Markdown tables.
+- PCA: inspected pages 1-5. Census column headers and table content are readable in Markdown pipe format. Page 1 starts with an empty heading path because the PCA heading occurs on that page; pages 2-5 correctly retain ["PCA"].
+- Both approved documents were inspected using Neon SQL queries. Total: 2 documents and 176 pages.
