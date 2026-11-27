@@ -321,6 +321,8 @@ async def fetch_one(
         "source": src.source,
         "licence": src.licence,
         "title": src.title,
+        "download_permission": src.download_permission,
+        "ingestion_permission": src.ingestion_permission,
         "via": "http",
     }
     allowed, crawl_delay = await robots.check(src.url)
