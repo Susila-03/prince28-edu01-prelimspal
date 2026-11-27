@@ -1,13 +1,14 @@
 """App factory: build a fully wired FastAPI app from settings."""
 
+import asyncio
 import logging
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, suppress
 
 from fastapi import APIRouter, FastAPI
 
 from prelimspal.api.errors import register_error_handlers
 from prelimspal.api.middleware import RequestContextMiddleware
-from prelimspal.api.routes import chat, documents, health
+from prelimspal.api.routes import chat, documents, health, ingest
 from prelimspal.config import Settings, get_settings
 from prelimspal.db.llm_calls import make_recorder
 from prelimspal.db.session import make_engine, make_sessionmaker
@@ -26,7 +27,23 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @asynccontextmanager
     async def lifespan(app: FastAPI):
         logger.info("starting", extra={"status": settings.app_env})
+
+        worker = None
+        if settings.worker_in_api:
+            from prelimspal.workers.main import run_embedded
+
+            worker = asyncio.create_task(run_embedded(settings))
+
         yield
+
+        if worker:
+            worker.cancel()
+            with suppress(asyncio.CancelledError):
+                await worker
+
+        if getattr(app.state, "queue", None):
+            await app.state.queue.close()
+
         await engine.dispose()
 
     app = FastAPI(
@@ -47,6 +64,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     v1 = APIRouter(prefix="/v1")
     v1.include_router(documents.router)
     v1.include_router(chat.router)
+    v1.include_router(ingest.router)
 
     app.include_router(health.router)
     app.include_router(v1)
