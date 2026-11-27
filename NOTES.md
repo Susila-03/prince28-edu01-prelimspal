@@ -540,7 +540,7 @@ I initially queried the local Docker database, which had 0 parsed pages. I check
 - My best router prompt: classify_v4 with 20 / 20.
 - What I changed in v4, and what happened to the score: Added a specific UPSC 2023 Prisons and Prisons Act example. Accuracy remained 20/20, the same as v3.
 - The question my best version still gets wrong (line, wanted, got), and why I think so: None. Both v3 and v4 classified all 20 test questions correctly.
-- A label in my test set that I changed after seeing the results: [Write "none" if you did not change any label.]
+- A label in my test set that I changed after seeing the results: none.
 - Input tokens per question: v1 110, best version (v4) 400. The extra accuracy is worth it for this test: accuracy increased from 65% to 100%, although token usage increased.
 
 ### My contract (DocMeta)
