@@ -20,3 +20,5 @@ htmlcov/
 
 # Backup of selected NCERT book register (local only)
 /data/ncert_selected_books_backup.csv
+
+eval/cache/

@@ -511,3 +511,52 @@ I initially queried the local Docker database, which had 0 parsed pages. I check
 - Final usage check: 27 calls, 12 errors, 15 fallbacks, 3,551 input tokens, and 2,388 output tokens.
 - Estimated total cost: Rs 0.0934.
 - Neon SQL verification: Confirmed failed Gemini calls and successful Groq fallback calls were recorded in `llm_calls`.
+
+## D09 · Prompt versions compared
+
+<!-- prompts:start -->
+
+| Prompt version | Correct | Accuracy | Invalid replies | Avg tokens in |
+|---|---|---|---|---|
+| classify_v1 | 13/20 | 65% | 0 | 110 |
+| classify_v2 | 16/20 | 80% | 1 | 285 |
+| classify_v3 | 20/20 | 100% | 0 | 435 |
+| classify_v4 | 20/20 | 100% | 0 | 400 |
+
+<!-- prompts:end -->
+
+## D09 - Extraction trial review
+
+- Trial command: `uv run python scripts/extract_metadata.py --limit 5`.
+- Only 2 documents were pending for `extract_v1`, so 2 were processed instead of 5.
+- Result: 2 successful, 0 repaired, 0 failed.
+- `Sub_Division_IMD_2017`: Extracted year 2017 and rainfall-related topics. The source contains historical rainfall observations from 1901 onwards.
+- `PCA`: Identified population, census and demographic topics, but year was null.
+- Review finding: The PCA source filename `PCA0000_2011_MDDS.xls` indicates 2011, but the extractor sends only the document title and page text to the model, not the original source path.
+- Improvement opportunity: Include the original source path in a future extraction prompt version so the model can use reliable filename context when identifying document years.
+
+## D09 · Prompts and structured output
+
+- My best router prompt: classify_v4 with 20 / 20.
+- What I changed in v4, and what happened to the score: Added a specific UPSC 2023 Prisons and Prisons Act example. Accuracy remained 20/20, the same as v3.
+- The question my best version still gets wrong (line, wanted, got), and why I think so: None. Both v3 and v4 classified all 20 test questions correctly.
+- A label in my test set that I changed after seeing the results: [Write "none" if you did not change any label.]
+- Input tokens per question: v1 110, best version (v4) 400. The extra accuracy is worth it for this test: accuracy increased from 65% to 100%, although token usage increased.
+
+### My contract (DocMeta)
+
+- Fields I kept from my project card: `paper`, `subject`, `syllabus_topic`, `ncert_book`.
+- Fields I deleted, and why they make no sense per document: `q_no`, `answer`, `page`. These describe individual questions or pages, not an entire document.
+- The field I tightened, and how: `doc_kind` is restricted to the allowed `Kind` Literal values. I also set limits for year, summary length, topics and list sizes.
+
+### Extraction run
+
+- Prompt version: `extract_v1` · documents: 2 ok, 0 repaired, 0 failed (of 2 eligible documents).
+- Not finished? Why, and how many are left: All 2 eligible documents were already processed. No pending eligible documents remained. Five `record` documents were excluded by the extractor.
+- Most common failure reason, and what I did about it: No failure rows were reported by the error query; no retry was needed.
+- A record that was valid but wrong (document, field, what it said, what is true): PCA, `year` was null, but its source filename `PCA0000_2011_MDDS.xls` indicates 2011. The extractor did not receive the source path.
+- Cost at list price: Rs 0.0881 in total, Rs 0.04405 per document.
+
+### One thing that went wrong today, and how I fixed it
+
+The browser added a tracking parameter (`utm_source`) to my API URL. The API treated it as a metadata filter and returned zero results. I tested the API using PowerShell `Invoke-RestMethod` with a clean URL instead, and the filters returned the expected documents.
