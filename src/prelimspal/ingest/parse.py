@@ -13,6 +13,7 @@ from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import Path
 
+import openpyxl
 import pymupdf
 import trafilatura
 import xlrd
@@ -419,10 +420,77 @@ def parse_xls(path: Path) -> ParsedDoc:
         raise ParseError("corrupt", str(exc)) from exc
 
 
+def parse_xlsx(path: Path) -> ParsedDoc:
+    """Read an Excel XLSX workbook and convert sheets into Markdown pages."""
+    try:
+        workbook = openpyxl.load_workbook(
+            path,
+            read_only=True,
+            data_only=True,
+        )
+        texts = []
+
+        try:
+            for sheet in workbook.worksheets:
+                rows = []
+
+                for row in sheet.iter_rows(values_only=True):
+                    values = [
+                        str(value).replace("|", "\\|").replace("\n", " ")
+                        if value is not None
+                        else ""
+                        for value in row
+                    ]
+
+                    if any(value.strip() for value in values):
+                        rows.append(values)
+
+                if not rows:
+                    continue
+
+                headers = rows[0]
+                width = len(headers)
+                data_rows = rows[1:]
+
+                if not data_rows:
+                    data_rows = [[]]
+
+                for start in range(0, len(data_rows), 5):
+                    chunk = data_rows[start : start + 5]
+
+                    lines = []
+                    if start == 0:
+                        lines.append(f"# {sheet.title}")
+                        lines.append("")
+
+                    lines.append("| " + " | ".join(headers) + " |")
+                    lines.append("| " + " | ".join(["---"] * width) + " |")
+
+                    for row in chunk:
+                        row = (row + [""] * width)[:width]
+                        lines.append("| " + " | ".join(row) + " |")
+
+                    texts.append("\n".join(lines))
+        finally:
+            workbook.close()
+
+        if not texts:
+            raise ParseError("empty", "Excel workbook contains no data")
+
+        return finish("openpyxl", "data", path.stem, texts)
+
+    except ParseError:
+        raise
+    except Exception as exc:
+        raise ParseError("corrupt", str(exc)) from exc
+
+
 def parse_file(path: Path, pdf_parser: str = "pymupdf") -> ParsedDoc:
     """Pick the parser by file type. Raises ParseError, never anything else."""
     suffix = path.suffix.lower()
     try:
+        if suffix == ".xlsx":
+            return parse_xlsx(path)
         if suffix == ".xls":
             return parse_xls(path)
         if suffix == ".pdf":
